@@ -5,8 +5,8 @@ resource "aws_security_group" "test-sg" {
 
   ingress {
     description      = "Http from VPC"
-    from_port        = 80
-    to_port          = 80
+    from_port        = var.port_number[0]
+    to_port          = var.port_number[0]
     protocol         = "tcp"
     cidr_blocks      = var.cidr_ipv4
     ipv6_cidr_blocks =  var.cidr_ipv6
