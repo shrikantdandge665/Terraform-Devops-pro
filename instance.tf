@@ -16,21 +16,18 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type_map["web"]
+  instance_type = var.instance_type_map["web-instance"]
   key_name = "linuxkey"
   vpc_security_group_ids = ["${aws_security_group.test-sg.id}"]
 
   tags = {
-    Name = var.instance_name
+    Name = var.instance_name[count.index]
   }
+  count = 2
 }
 
-variable "instance_type_map" {
- type = map(string)
- default = {
-  "web" = "t3.nano"
-  "db" = "t3.micro"
-  "devops" = "t2.micro"
- } 
-  
+output "Names" {
+    value = aws_instance.web[*].tags["Name"]
 }
+
+ 
